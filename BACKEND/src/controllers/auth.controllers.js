@@ -25,7 +25,13 @@ async function registerController(req,res){
     
     const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
     
-    res.cookie("token", token)
+    res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,       // ✅ needed on HTTPS
+    sameSite: "None",   // ✅ needed to allow cross-site cookie
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 1 week 
+    });
+
     
     res.status(201).json({message : " user registerd sucessfully",user})
     } catch (error) {
@@ -50,7 +56,12 @@ async function logincontroller(req,res){
     
     const token = jwt.sign({id: user._id},process.env.JWT_SECRET)
     
-    res.cookie("token",token)
+    res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,       // ✅ needed on HTTPS
+    sameSite: "None",   // ✅ needed to allow cross-site cookie
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 1 week 
+    });
     
     res.status(200).json({message : "User Logged In Successfully",user,id: user._id,})
 }
